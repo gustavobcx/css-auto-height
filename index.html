@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Auto Height</title>
+  <style>
+    :root {
+      --aspect-ratio: 4/4;
+    }
+
+    * {
+      font-family: sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /**
+     * Box without content
+     */
+    .box {
+      width: 270px;
+
+      position: relative;
+
+      /* optional */
+      display: inline-block;
+      vertical-align: middle;
+
+      /* optional */
+      border: 2px solid #ccc;
+      background-color: #ddd;
+
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    
+    .box::before {
+      content: "";
+      height: 0;
+      display: block;
+      padding-bottom: 100%; /* 4/4 */
+      padding-bottom: calc( 100% / (var(--aspect-ratio)) );
+    }
+
+    /**
+     * Box with content
+     */
+    .boxc {
+      width: 270px;
+      position: relative;
+
+      /* optional */
+      display: inline-block;
+      vertical-align: middle;
+      
+      /* optional */
+      border: 2px solid #ccc;
+      background-color: #ddd;
+    }
+
+    .box-wrapper {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+      display: flex;
+    }
+
+    .box-wrapper img { 
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      margin: auto;
+    }
+
+    .boxc::before {
+      content: "";
+      height: 0;
+      float: left;
+      padding-bottom: 100%; /* 4/4 */
+      padding-bottom: calc( 100% / (var(--aspect-ratio)) );
+    }
+
+    /* holder content in display */
+    .boxc::after {
+      display: block;
+      content: '';
+      clear: both;
+    }
+
+    /**
+     * Box list
+     */
+    .list {
+      display: flex;
+      max-width: 697px;
+    }
+
+    .list > [class^="box"] {
+      width: 25%;
+    }
+
+    .list > [class^="box"]:not(:last-child) {
+      margin-right: 5px;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>CSS Auto Height</h1>
+
+  <h2>Box without content</h2>
+  <div class="box" style="background-image: url(https://source.unsplash.com/random)"></div>
+
+  <br />
+  <br />
+  <br />
+
+  <hr />
+
+  <h2>Box with content</h2>
+  <div class="boxc">
+    <div class="box-wrapper">
+      <img src="https://source.unsplash.com/random" />
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+  
+  <hr />
+
+  <h2>List</h2>
+
+  <div class="list">
+      <div class="boxc">
+        <div class="box-wrapper">
+          <img src="https://source.unsplash.com/random" />
+        </div>
+      </div>
+      <div class="box" style="background-image: url(https://source.unsplash.com/random)"></div>
+      <div class="boxc">
+        <div class="box-wrapper">
+          <img src="https://source.unsplash.com/random" />
+        </div>
+      </div>
+      <div class="box" style="background-image: url(https://source.unsplash.com/random)"></div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+  
+  <hr />
+
+  <br />
+  <br />
+  <br />
+
+  <div class="references">
+    <strong>References:</strong>
+    <p><a target="_black" href="https://www.treinaweb.com.br/blog/css-altura-automatica-proporcional-a-largura-sem-javascript/">Treinaweb</a></p>
+    <p><a target="_black" href="https://stackoverflow.com/questions/41604449/how-to-use-css-to-set-height-of-image-the-same-as-width">Stackoverflow</a></p>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      fetch('https://source.unsplash.com/random')
+        .then(r => {
+          const p = document.createElement('p');
+          p.innerHTML = `<a target="_black" href="${r.url || 'https://source.unsplash.com/random'}">Image by Unsplash</a>`;
+          document.querySelector('.references').appendChild(p);
+        });
+    });
+  </script>
+  
+</body>
+</html>
